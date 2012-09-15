@@ -1,10 +1,8 @@
-#controlpanel {
-    display: inline;
-    float: left;
+#controlpanel, #canvaspanel {
+    display: inline-block;
 }
 
-#canvaspanel {
-    display: inline;
-    float: left;
-    padding-right: 10px;
+label span {
+    display: inline-block;
+    width: 60px;
 }

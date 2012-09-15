@@ -3,13 +3,13 @@
       kotak = document.getElementById("kotak"),
       lingkaran = document.getElementById("lingkaran"),
       garis = document.getElementById("garis"),
-      panjang = document.getElementById("panjang"),
-      lebar = document.getElementById("lebar"),
+      width = document.getElementById("width"),
+      height = document.getElementById("height"),
       radius = document.getElementById("radius"),
-      topControl = document.getElementById("top"),
-      leftControl = document.getElementById("left"),
-      top = canvas.getCenter().top,
-      left = canvas.getCenter().left,
+      top = document.getElementById("top"),
+      left = document.getElementById("left"),
+      centerTop = canvas.getCenter().top,
+      centerLeft = canvas.getCenter().left,
       toFixed = fabric.util.toFixed,
       addListener = fabric.util.addListener;
       
@@ -22,8 +22,8 @@
       fill: 'red',
       width: 100,
       height: 100,
-      top: top,
-      left: left
+      top: centerTop,
+      left: centerLeft
     });
     
     canvas.add(newRect);
@@ -34,8 +34,8 @@
     var newCircle = new fabric.Circle({
       fill: 'green',
       radius: 50,
-      top: top,
-      left: left
+      top: centerTop,
+      left: centerLeft
     });
     
     canvas.add(newCircle);
@@ -44,10 +44,10 @@
   
   function drawLine() {
     var points = [
-        left - 50,
-        top - 50,
-        left + 50,
-        top + 50
+        centerLeft - 50,
+        centerTop - 50,
+        centerLeft + 50,
+        centerTop + 50
       ],
       newLine = new fabric.Line(points, {
         fill: 'blue',
@@ -58,67 +58,38 @@
     canvas.renderAll();
   }
   
-  kotak.addEventListener('click', drawRect, false);
-  lingkaran.addEventListener('click', drawCircle, false);
-  garis.addEventListener('click', drawLine, false);
+  addListener(kotak, 'click', drawRect);
+  addListener(lingkaran, 'click', drawCircle);
+  addListener(garis, 'click', drawLine);
   
   /***********************************************
    * Bagian controller
    ***********************************************/
-  function getSelectedObjects() {
-    return canvas.getActiveObject() ||
-      (canvas.getActiveGroup() ? canvas.getActiveGroup().getObjects() : null);
-  }
-  
-  function updateWidth(e) {
+  function update(e) {
     if (e.keyCode === 13) {
-      var selected = getSelectedObjects(),
-          value = toFixed(e.target.value);
-          
-      if (selected instanceof fabric.Object) {
-        selected.set('width', value).setCoords();
-      } else {
-        selected.forEach(function (item) {
-          item.set('width', value).setCoords();
-        });
+      var selected = canvas.getActiveObject(),
+          value = toFixed(e.target.value),
+          id = e.target.id;
+      
+      if (!selected) {
+        return;
+      }
+      
+      if (id === 'radius' && selected instanceof fabric.Circle) {
+        selected.set(id, value).setCoords();
+      } else if (id === 'top' || id === 'left') {
+        selected.set(id, value).setCoords();
+      } else if (!(selected instanceof fabric.Circle)) {
+        selected.set(id, value).setCoords();
       }
       
       canvas.renderAll();
     }
   }
   
-  function updateHeight(e) {
-    if (e.keyCode === 13) {
-      var selected = getSelectedObjects(),
-          value = toFixed(e.target.value);
-      
-      if (selected instanceof fabric.Object) {
-        selected.set('height', value).setCoords();
-      } else {
-        selected.forEach(function (item) {
-          item.set('height', value).setCoords();
-        });
-      }
-      
-      canvas.renderAll();
-    }
-  }
-  
-  function updateRadius(e) {
-    
-  }
-  
-  function updateTop(e) {
-    
-  }
-  
-  function updateLeft(e) {
-    
-  }
-  
-  addListener(panjang, 'keydown', updateWidth);
-  addListener(lebar, 'keydown', updateHeight);
-  addListener(radius, 'keydown', updateRadius);
-  addListener(topControl, 'keydown', updateTop);
-  addListener(leftControl, 'keydown', updateLeft);
+  addListener(width, 'keydown', update);
+  addListener(height, 'keydown', update);
+  addListener(radius, 'keydown', update);
+  addListener(top, 'keydown', update);
+  addListener(left, 'keydown', update);
 })();
