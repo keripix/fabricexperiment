@@ -104,7 +104,7 @@
       width.value = selected.get('width') || null;
       height.value = selected.get('height') || null;
       radius.value = selected.get('radius') || null;
-      angle.value = selected.get('angle') || null;
+      angle.value = selected.getAngle();
       top.value = selected.get('top');
       left.value = selected.get('left');
     }
