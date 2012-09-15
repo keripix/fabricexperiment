@@ -81,7 +81,7 @@
       if (id === 'radius' && selected instanceof fabric.Circle) {
         // bila yang berubah adalah nilai radius
         // dan objek yang terpilih adalah lingkaran
-        selected.set(id, value).setCoords();
+        selected.setRadius(value);
       } else if (id === 'top' || id === 'left') {
         // bila yang berubah adalah nilai top atau left
         selected.set(id, value).setCoords();
