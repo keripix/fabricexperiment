@@ -73,15 +73,22 @@
           value = toFixed(e.target.value),
           id = e.target.id;
       
+      // fail early bila tidak ada yg terpilih
       if (!selected) {
         return;
       }
       
       if (id === 'radius' && selected instanceof fabric.Circle) {
+        // bila yang berubah adalah nilai radius
+        // dan objek yang terpilih adalah lingkaran
         selected.set(id, value).setCoords();
       } else if (id === 'top' || id === 'left') {
+        // bila yang berubah adalah nilai top atau left
         selected.set(id, value).setCoords();
       } else if (!(selected instanceof fabric.Circle)) {
+        // bila yang berubah adalah nilai selain properti pada
+        // kondisi sebelumnya, dan objek yang terpilih
+        // bukanlah lingkaran
         selected.set(id, value).setCoords();
       }
       
