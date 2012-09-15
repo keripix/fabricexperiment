@@ -1,15 +1,18 @@
 (function () {
-  var canvas = new fabric.Canvas("bisacanvas"),
+  var canvas = new fabric.Canvas("bisacanvas",{selection:false}),
       kotak = document.getElementById("kotak"),
       lingkaran = document.getElementById("lingkaran"),
       garis = document.getElementById("garis"),
-      panjang = document.getElementById("panjang"),
-      lebar = document.getElementById("lebar"),
+      width = document.getElementById("width"),
+      height = document.getElementById("height"),
       radius = document.getElementById("radius"),
-      topControl = document.getElementById("top"),
-      leftControl = document.getElementById("left"),
-      top = canvas.getCenter().top,
-      left = canvas.getCenter().left;
+      angle = document.getElementById("angle"),
+      top = document.getElementById("top"),
+      left = document.getElementById("left"),
+      centerTop = canvas.getCenter().top,
+      centerLeft = canvas.getCenter().left,
+      toFixed = fabric.util.toFixed,
+      addListener = fabric.util.addListener;
       
   /**********************************
    * Fungsi-fungsi untuk membuat objek
@@ -20,8 +23,8 @@
       fill: 'red',
       width: 100,
       height: 100,
-      top: top,
-      left: left
+      top: centerTop,
+      left: centerLeft
     });
     
     canvas.add(newRect);
@@ -32,8 +35,8 @@
     var newCircle = new fabric.Circle({
       fill: 'green',
       radius: 50,
-      top: top,
-      left: left
+      top: centerTop,
+      left: centerLeft
     });
     
     canvas.add(newCircle);
@@ -42,10 +45,10 @@
   
   function drawLine() {
     var points = [
-        left - 50,
-        top - 50,
-        left + 50,
-        top + 50
+        centerLeft - 50,
+        centerTop - 50,
+        centerLeft + 50,
+        centerTop + 50
       ],
       newLine = new fabric.Line(points, {
         fill: 'blue',
@@ -56,50 +59,66 @@
     canvas.renderAll();
   }
   
-  kotak.addEventListener('click', drawRect, false);
-  lingkaran.addEventListener('click', drawCircle, false);
-  garis.addEventListener('click', drawLine, false);
+  addListener(kotak, 'click', drawRect);
+  addListener(lingkaran, 'click', drawCircle);
+  addListener(garis, 'click', drawLine);
   
   /***********************************************
    * Bagian controller
    ***********************************************/
-  function getSelectedObjects() {
-    return canvas.getActiveObject() ||
-      (canvas.getActiveGroup() ? canvas.getActiveGroup().getObjects() : null);
-  }
-  
-  function updateWidth(e) {
+  // Ubah objek yang sedang dipilih berdasarkan nilai yang dimasukkan
+  function update(e) {
     if (e.keyCode === 13) {
-      var selected = getSelectedObjects();
+      var selected = canvas.getActiveObject(),
+          value = toFixed(e.target.value),
+          id = e.target.id;
       
-      if (selected instanceof fabric.Object) {
-        selected.set('width', e.target.value).setCoords();
-      } else {
-        selected.forEach(function (item) {
-          item.set('width', e.target.value).setCoords();
-        });
+      // fail early bila tidak ada yg terpilih
+      if (!selected) {
+        return;
+      }
+      
+      if (id === 'radius' && selected instanceof fabric.Circle) {
+        // bila yang berubah adalah nilai radius
+        // dan objek yang terpilih adalah lingkaran
+        selected.set(id, value).setCoords();
+      } else if (id === 'top' || id === 'left') {
+        // bila yang berubah adalah nilai top atau left
+        selected.set(id, value).setCoords();
+      } else if (!(selected instanceof fabric.Circle)) {
+        // bila yang berubah adalah nilai selain properti pada
+        // kondisi sebelumnya, dan objek yang terpilih
+        // bukanlah lingkaran
+        selected.set(id, value).setCoords();
       }
       
       canvas.renderAll();
     }
   }
   
-  function updateHeight(e) {
-    if (e.keyCode === 13) {
-      var selected = getSelectedObjects();
-      
-      if (selected instanceof fabric.Object) {
-        selected.set('height', e.target.value).setCoords();
-      } else {
-        selected.forEach(function (item) {
-          item.set('height', e.target.value).setCoords();
-        });
-      }
-      
-      canvas.renderAll();
+  // Update nilai pada input fields
+  function updateControl(){
+    var selected = canvas.getActiveObject();
+    
+    if (selected) {
+      width.value = selected.get('width') || null;
+      height.value = selected.get('height') || null;
+      radius.value = selected.get('radius') || null;
+      angle.value = selected.getAngle();
+      top.value = selected.get('top');
+      left.value = selected.get('left');
     }
   }
   
-  panjang.addEventListener('keydown', updateWidth, false);
-  lebar.addEventListener('keydown', updateHeight, false);
+  // pasang eventlistener
+  addListener(width, 'keydown', update);
+  addListener(height, 'keydown', update);
+  addListener(radius, 'keydown', update);
+  addListener(top, 'keydown', update);
+  addListener(left, 'keydown', update);
+  addListener(angle, 'keydown', update);
+  
+  canvas.observe({
+    'object:selected': updateControl
+  });
 })();
