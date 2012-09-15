@@ -1,0 +1,10 @@
+#controlpanel {
+    display: inline;
+    float: left;
+}
+
+#canvaspanel {
+    display: inline;
+    float: left;
+    padding-right: 10px;
+}
