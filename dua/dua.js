@@ -1,5 +1,5 @@
 (function () {
-  var canvas = new fabric.Canvas("bisacanvas"),
+  var canvas = new fabric.Canvas("bisacanvas",{selection:false}),
       kotak = document.getElementById("kotak"),
       lingkaran = document.getElementById("lingkaran"),
       garis = document.getElementById("garis"),
@@ -9,7 +9,9 @@
       topControl = document.getElementById("top"),
       leftControl = document.getElementById("left"),
       top = canvas.getCenter().top,
-      left = canvas.getCenter().left;
+      left = canvas.getCenter().left,
+      toFixed = fabric.util.toFixed,
+      addListener = fabric.util.addListener;
       
   /**********************************
    * Fungsi-fungsi untuk membuat objek
@@ -70,13 +72,14 @@
   
   function updateWidth(e) {
     if (e.keyCode === 13) {
-      var selected = getSelectedObjects();
-      
+      var selected = getSelectedObjects(),
+          value = toFixed(e.target.value);
+          
       if (selected instanceof fabric.Object) {
-        selected.set('width', e.target.value).setCoords();
+        selected.set('width', value).setCoords();
       } else {
         selected.forEach(function (item) {
-          item.set('width', e.target.value).setCoords();
+          item.set('width', value).setCoords();
         });
       }
       
@@ -86,13 +89,14 @@
   
   function updateHeight(e) {
     if (e.keyCode === 13) {
-      var selected = getSelectedObjects();
+      var selected = getSelectedObjects(),
+          value = toFixed(e.target.value);
       
       if (selected instanceof fabric.Object) {
-        selected.set('height', e.target.value).setCoords();
+        selected.set('height', value).setCoords();
       } else {
         selected.forEach(function (item) {
-          item.set('height', e.target.value).setCoords();
+          item.set('height', value).setCoords();
         });
       }
       
@@ -100,6 +104,21 @@
     }
   }
   
-  panjang.addEventListener('keydown', updateWidth, false);
-  lebar.addEventListener('keydown', updateHeight, false);
+  function updateRadius(e) {
+    
+  }
+  
+  function updateTop(e) {
+    
+  }
+  
+  function updateLeft(e) {
+    
+  }
+  
+  addListener(panjang, 'keydown', updateWidth);
+  addListener(lebar, 'keydown', updateHeight);
+  addListener(radius, 'keydown', updateRadius);
+  addListener(topControl, 'keydown', updateTop);
+  addListener(leftControl, 'keydown', updateLeft);
 })();
