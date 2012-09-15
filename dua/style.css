@@ -2,6 +2,14 @@
     display: inline-block;
 }
 
+#centerpanel {
+    margin-top: 5px;
+}
+
+#canvaspanel {
+    margin-right: 10px;
+}
+
 label span {
     display: inline-block;
     width: 60px;

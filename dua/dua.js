@@ -6,6 +6,7 @@
       width = document.getElementById("width"),
       height = document.getElementById("height"),
       radius = document.getElementById("radius"),
+      angle = document.getElementById("angle"),
       top = document.getElementById("top"),
       left = document.getElementById("left"),
       centerTop = canvas.getCenter().top,
@@ -65,6 +66,7 @@
   /***********************************************
    * Bagian controller
    ***********************************************/
+  // Ubah objek yang sedang dipilih berdasarkan nilai yang dimasukkan
   function update(e) {
     if (e.keyCode === 13) {
       var selected = canvas.getActiveObject(),
@@ -87,9 +89,29 @@
     }
   }
   
+  // Update nilai pada input fields
+  function updateControl(){
+    var selected = canvas.getActiveObject();
+    
+    if (selected) {
+      width.value = selected.get('width') || null;
+      height.value = selected.get('height') || null;
+      radius.value = selected.get('radius') || null;
+      angle.value = selected.get('angle') || null;
+      top.value = selected.get('top');
+      left.value = selected.get('left');
+    }
+  }
+  
+  // pasang eventlistener
   addListener(width, 'keydown', update);
   addListener(height, 'keydown', update);
   addListener(radius, 'keydown', update);
   addListener(top, 'keydown', update);
   addListener(left, 'keydown', update);
+  addListener(angle, 'keydown', update);
+  
+  canvas.observe({
+    'object:selected': updateControl
+  });
 })();
