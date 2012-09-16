@@ -9,6 +9,7 @@
       angle = document.getElementById("angle"),
       top = document.getElementById("top"),
       left = document.getElementById("left"),
+      opacity = document.getElementById("opacity"),
       centerTop = canvas.getCenter().top,
       centerLeft = canvas.getCenter().left,
       toFixed = fabric.util.toFixed,
@@ -70,7 +71,7 @@
   function update(e) {
     if (e.keyCode === 13) {
       var selected = canvas.getActiveObject(),
-          value = toFixed(e.target.value),
+          value = toFixed(e.target.value, 2),
           id = e.target.id;
       
       // fail early bila tidak ada yg terpilih
@@ -85,6 +86,10 @@
       } else if (id === 'top' || id === 'left') {
         // bila yang berubah adalah nilai top atau left
         selected.set(id, value).setCoords();
+      } else if (id === 'opacity') {
+        if (value >= 0 && value <= 1) {
+          selected.setOpacity(value);
+        }
       } else if (!(selected instanceof fabric.Circle)) {
         // bila yang berubah adalah nilai selain properti pada
         // kondisi sebelumnya, dan objek yang terpilih
@@ -97,12 +102,12 @@
   }
   
   // Update nilai pada input fields
-  function updateControl(){
+  function updateControl() {
     var selected = canvas.getActiveObject();
     
     if (selected) {
-      width.value = selected.get('width') || null;
-      height.value = selected.get('height') || null;
+      width.value = selected.getWidth() || null;
+      height.value = selected.getHeight() || null;
       radius.value = selected.get('radius') || null;
       angle.value = selected.getAngle();
       top.value = selected.get('top');
@@ -117,6 +122,7 @@
   addListener(top, 'keydown', update);
   addListener(left, 'keydown', update);
   addListener(angle, 'keydown', update);
+  addListener(opacity, 'keydown', update);
   
   canvas.observe({
     'object:selected': updateControl
