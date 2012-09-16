@@ -1,5 +1,5 @@
 (function () {
-  var canvas = new fabric.Canvas("bisacanvas",{selection:false}),
+  var canvas = new fabric.Canvas("bisacanvas", {selection: false}),
       kotak = document.getElementById("kotak"),
       lingkaran = document.getElementById("lingkaran"),
       garis = document.getElementById("garis"),
@@ -67,7 +67,9 @@
   /***********************************************
    * Bagian controller
    ***********************************************/
+  
   // Ubah objek yang sedang dipilih berdasarkan nilai yang dimasukkan
+  // sengaja dibuat 1 fungsi besar
   function update(e) {
     if (e.keyCode === 13) {
       var selected = canvas.getActiveObject(),
@@ -108,10 +110,11 @@
     if (selected) {
       width.value = selected.getWidth() || null;
       height.value = selected.getHeight() || null;
-      radius.value = selected.get('radius') || null;
       angle.value = selected.getAngle();
       top.value = selected.get('top');
       left.value = selected.get('left');
+      opacity.value = selected.get('opacity');
+      radius.value = (selected instanceof fabric.Circle) ? selected.getRadiusX() : null;
     }
   }
   
