@@ -1,5 +1,6 @@
 #controlpanel, #canvaspanel {
-    display: inline-block;
+    display: inline;
+    float: left;
 }
 
 #centerpanel {
