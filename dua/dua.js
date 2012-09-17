@@ -14,6 +14,8 @@
       top = document.getElementById("top"),
       left = document.getElementById("left"),
       opacity = document.getElementById("opacity"),
+      getwidth = document.getElementById("getwidth"),
+      getheight = document.getElementById("getheight"),
       backgroundImage = document.getElementById("backgroundImage"),
       centerTop = canvas.getCenter().top, // top untuk tengah canvas
       centerLeft = canvas.getCenter().left, // left untuk tengah canvas
@@ -178,6 +180,11 @@
        * }
        */
       radius.value = (selected instanceof fabric.Circle) ? selected.getRadiusX() : null;
+      
+      if (getwidth && getheight) {
+        getwidth.value = selected.get('width');
+        getheight.value = selected.get('height');
+      }
     }
   }
   
