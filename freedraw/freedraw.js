@@ -2,7 +2,6 @@
   var canvas = new fabric.Canvas('bisacanvas'),
       kotak = document.getElementById('rect'),
       lingkaran = document.getElementById('circle'),
-      garis = document.getElementById('line'),
       gambar = document.getElementById('image'),
       addListener = fabric.util.addListener,
       drawing,
@@ -28,8 +27,6 @@
       drawing = new Rectangle();
     } else if (params.type === 'circle') {
       drawing = new Circle();
-    } else if (params.type === 'line') {
-      drawing = new Line();
     } else if (params.type === 'image') {
       drawing = new FImage();
     }
@@ -151,14 +148,7 @@
       instance.setCoords();
       canvas.add(instance);
       canvas.renderAll();
-    }
-    /*,
-    {
-      top: point.y,
-      left: point.x,
-      height: 4,
-      width: 4
-    }*/);
+    });
   }
   
   FImage.prototype.update = function (e) {
@@ -194,61 +184,4 @@
       canvas.renderAll();
     }
   }
-  
-  /******************************************
-   * OBJEK UNTUK GARIS LURUS
-   ******************************************/
-  
-  function Line(params) {
-    
-  }
-  
-  Line.prototype.create = function (e) {
-    var point = canvas.getPointer(e.e),
-        coords = [
-          point.x,
-          point.y,
-          point.x + 1,
-          point.y + 1
-        ];
-    
-    instance = new fabric.Line(coords, {
-      strokeWidth: 5,
-      fill: 'yellow'
-    });
-    
-    canvas.add(instance);
-    canvas.renderAll();
-  }
-  
-  Line.prototype.update = function (e) {
-    if (instance instanceof fabric.Line) {
-      
-      var point = canvas.getPointer(e.e),
-          x1 = instance.get('x1'),
-          x2 = point.x,
-          y1 = instance.get('y1'),
-          y2 = point.y;
-        
-      if (x2 < x1) {
-        x2 = x1;
-        x1 = point.x;
-      }
-      
-      if (y2 < y1) {
-        y2 = y1;
-        y1 = point.y;
-      }
-      
-      instance.set({
-        x1: x1,
-        y1: y1,
-        x2: x2,
-        y2: y2
-      });
-      
-      canvas.renderAll();
-    }
-  }
-  
 })();
