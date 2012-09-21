@@ -2,7 +2,6 @@
   var canvas = new fabric.Canvas('bisacanvas'),
       kotak = document.getElementById('kotak'),
       addListener = fabric.util.addListener,
-      isDrawing = false,
       drawing,
       instance;
     
@@ -41,7 +40,8 @@
     canvas.stopObserving('mouse:down', drawing.create);
     canvas.stopObserving('mouse:up', stopDrawing);
     
-    isDrawing = false;
+    instance.setCoords();
+    
     instance = null;
     drawing = null;
   }
@@ -65,35 +65,23 @@
     
     canvas.add(instance);
     canvas.renderAll();
-    isDrawing = true;
   }
   
   Rectangle.prototype.update = function (e) {
-    if (isDrawing) {
+    if (instance instanceof fabric.Object) {
       var topLeft = instance.get('oCoords').tl,
-          currentTop = instance.get('top'),
-          currentLeft = instance.get('Left'),
-          currentHeight = instance.getHeight(),
-          currentWidth = instance.getWidth(),
-          width,
-          height,
-          top,
-          left,
-          point = canvas.getPointer(e.e);
-          
-      width = point.x - topLeft.x;
-      height = point.y - topLeft.y;
-      top = height / 2 + topLeft.y;
-      left = width / 2 + topLeft.x;
+          point = canvas.getPointer(e.e),
+          width = point.x - topLeft.x,
+          height = point.y - topLeft.y,
+          top = height / 2 + topLeft.y,
+          left = width / 2 + topLeft.x;
       
       instance.set({
         top: top,
-        left: left      
+        left: left,
+        width: Math.abs(width),
+        height: Math.abs(height)
       });
-      
-      instance.setWidth(Math.abs(width));
-      instance.setHeight(Math.abs(height));
-      instance.setCoords();
       
       canvas.renderAll();
     }
@@ -103,10 +91,7 @@
    * OBJEK UNTUK LINGKARAN
    *****************************************/
   function Circle() {
-    this.fill = params.fill || 'red';
-    this.originalWidth = 5;
-    this.originalHeight = 5;
-    this.instance = undefined;
+    
   }
   
   Circle.prototype.create = function () {
