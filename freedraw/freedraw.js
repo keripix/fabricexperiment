@@ -3,6 +3,7 @@
       kotak = document.getElementById('rect'),
       lingkaran = document.getElementById('circle'),
       gambar = document.getElementById('image'),
+      sketch = document.getElementById('sketch'),
       addListener = fabric.util.addListener,
       drawing,
       instance;
@@ -17,7 +18,7 @@
   
   addListener(kotak, 'click', create);
   addListener(lingkaran, 'click', create);
-  addListener(garis, 'click', create);
+  addListener(sketch, 'click', create);
   addListener(gambar, 'click', create);
   
   function activateDrawing(params) {
@@ -29,6 +30,8 @@
       drawing = new Circle();
     } else if (params.type === 'image') {
       drawing = new FImage();
+    } else if (params.type === 'sketch') {
+      drawing = new Sketch();
     }
     
     if (drawing) {
@@ -47,10 +50,32 @@
     canvas.stopObserving('mouse:down', drawing.create);
     canvas.stopObserving('mouse:up', stopDrawing);
     
-    instance.setCoords();
+    if (instance instanceof fabric.Object) {
+      instance.setCoords();
+      instance = null;
+    } else {
+      canvas.isDrawingMode = false;
+    }
     
-    instance = null;
     drawing = null;
+  }
+  
+  /*******************************************
+   * OBJEK SKETSA
+   *******************************************/
+  
+  function Sketch() {
+    canvas.freeDrawingColor = 'back';
+    canvas.freeDrawingLineWidth = 10;
+    canvas.isDrawingMode = true;
+  }
+  
+  Sketch.prototype.create = function (e) {
+    
+  }
+  
+  Sketch.prototype.update = function (e) {
+    
   }
   
   /*******************************************
