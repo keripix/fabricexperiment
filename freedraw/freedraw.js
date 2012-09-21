@@ -1,11 +1,13 @@
 (function () {
   var canvas = new fabric.Canvas('bisacanvas'),
       kotak = document.getElementById('rect'),
+      lingkaran = document.getElementById('circle'),
       addListener = fabric.util.addListener,
       drawing,
       instance;
     
   addListener(kotak, 'click', create);
+  addListener(lingkaran, 'click', create);
   
   function create(e) {
     var id = e.target.id;
@@ -70,7 +72,7 @@
   }
   
   Rectangle.prototype.update = function (e) {
-    if (instance instanceof fabric.Object) {
+    if (instance instanceof fabric.Rect) {
       var topLeft = instance.get('oCoords').tl,
           point = canvas.getPointer(e.e),
           width = point.x - topLeft.x,
@@ -96,12 +98,30 @@
     
   }
   
-  Circle.prototype.create = function () {
+  Circle.prototype.create = function (e) {
+    var point = canvas.getPointer(e.e);
     
+    instance = new fabric.Circle({
+      fill: 'blue',
+      radius: 3,
+      top: point.y,
+      left: point.x
+    });
+    
+    canvas.add(instance);
+    canvas.renderAll();
   }
   
-  Circle.prototype.update = function () {
-    
+  Circle.prototype.update = function (e) {
+    if (instance instanceof fabric.Circle) {
+      var point = canvas.getPointer(e.e),
+          top = instance.get('top'),
+          left = instance.get('left'),
+          radius = Math.sqrt(Math.pow(point.x - left, 2) + Math.pow(point.y - top, 2));
+          
+      instance.setRadius(radius);
+      canvas.renderAll();
+    }
   }
   
   /******************************************
