@@ -1,5 +1,7 @@
 (function () {
-  var canvas = new fabric.Canvas('bisacanvas'),
+  var canvas = new fabric.Canvas('bisacanvas', {
+        selection: false
+      }),
       kotak = document.getElementById('rect'),
       lingkaran = document.getElementById('circle'),
       gambar = document.getElementById('image'),
