@@ -1,6 +1,6 @@
 (function () {
   var canvas = new fabric.Canvas('bisacanvas'),
-      kotak = document.getElementById('kotak'),
+      kotak = document.getElementById('rect'),
       addListener = fabric.util.addListener,
       drawing,
       instance;
@@ -10,11 +10,9 @@
   function create(e) {
     var id = e.target.id;
     
-    if (id === 'kotak') {
-      activateDrawing({
-        type: 'rect'        
-      });      
-    }
+    activateDrawing({
+      type: id
+    });
   }
   
   function activateDrawing(params) {
@@ -22,6 +20,10 @@
     
     if (params.type === 'rect') {
       drawing = new Rectangle();
+    } else if (params.type === 'circle') {
+      drawing = new Circle();
+    } else if (params.type === 'line') {
+      drawing = new Line();
     }
     
     if (drawing) {
