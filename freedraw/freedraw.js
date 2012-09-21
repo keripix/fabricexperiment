@@ -2,12 +2,14 @@
   var canvas = new fabric.Canvas('bisacanvas'),
       kotak = document.getElementById('rect'),
       lingkaran = document.getElementById('circle'),
+      garis = document.getElementById('line'),
       addListener = fabric.util.addListener,
       drawing,
       instance;
     
   addListener(kotak, 'click', create);
   addListener(lingkaran, 'click', create);
+  addListener(line, 'click', create);
   
   function create(e) {
     var id = e.target.id;
@@ -128,6 +130,7 @@
    * OBJEK UNTUK GAMBAR
    ******************************************/
   
+  
   function FImage(params) {
     this.fill = params.fill || 'blue';
     this.originalWidth = 5;
@@ -148,19 +151,55 @@
    ******************************************/
   
   function Line(params) {
-    this.fill = params.fill || 'yellow';
-    this.originalWidth = 5;
-    this.originalHeight = 5;
-    this.strokeWidth = 10;
-    this.instance = undefined;
-  }
-  
-  Line.prototype.create = function () {
     
   }
   
-  Line.prototype.update = function () {
+  Line.prototype.create = function (e) {
+    var point = canvas.getPointer(e.e),
+        coords = [
+          point.x,
+          point.y,
+          point.x + 1,
+          point.y + 1
+        ];
     
+    instance = new fabric.Line(coords, {
+      strokeWidth: 5,
+      fill: 'yellow'
+    });
+    
+    canvas.add(instance);
+    canvas.renderAll();
+  }
+  
+  Line.prototype.update = function (e) {
+    if (instance instanceof fabric.Line) {
+      
+      var point = canvas.getPointer(e.e),
+          x1 = instance.get('x1'),
+          x2 = point.x,
+          y1 = instance.get('y1'),
+          y2 = point.y;
+        
+      if (x2 < x1) {
+        x2 = x1;
+        x1 = point.x;
+      }
+      
+      if (y2 < y1) {
+        y2 = y1;
+        y1 = point.y;
+      }
+      
+      instance.set({
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y2
+      });
+      
+      canvas.renderAll();
+    }
   }
   
 })();
