@@ -1,6 +1,6 @@
 (function () {
   var canvas = new fabric.Canvas('bisacanvas', {
-        selection: false
+        selection: false // nonaktifkan pemilihan objek secara group
       }),
       kotak = document.getElementById('rect'),
       lingkaran = document.getElementById('circle'),
@@ -10,6 +10,7 @@
       drawing,
       instance;
   
+  // yang dijalankan ketika tombol objek ditekan
   function create(e) {
     var id = e.target.id;
     
@@ -23,6 +24,9 @@
   addListener(sketch, 'click', create);
   addListener(gambar, 'click', create);
   
+  /**
+   * Menginisiasi objek yang akan mengatur proses pelukisan
+   */
   function activateDrawing(params) {
     canvas.defaultCursor = 'crosshair';
     
@@ -37,9 +41,16 @@
     }
     
     if (drawing) {
+      // Tiap instanta dari Rectangle, Circle, FImage dan Sketch memiliki
+      // 2 metode yang sama, yaitu update dan create
       canvas.observe({
+        // mengupdate ukuran objek fabric sesuai dengan posisi mouse
         'mouse:move': drawing.update,
+        
+        // membuat objek fabric yang hendak dilukis
         'mouse:down': drawing.create,
+        
+        // berhenti melukis
         'mouse:up': stopDrawing
       });
     }
@@ -56,6 +67,8 @@
       instance.setCoords();
       instance = null;
     } else {
+      // khusus untuk sketch, variabel instance akan tetap bernilai null,
+      // sehingga kita perlu menanganinay disini
       canvas.isDrawingMode = false;
     }
     
@@ -187,6 +200,8 @@
           top,
           left;
           
+      // Dapatkah pembaca memahami mengapa kita perlu melakukan pendekatan
+      // seperti ini?
       if (point.x < topLeft.x && point.y < topLeft.y) {
         top = height / 2 + point.y;
         left = width / 2 + point.x;
