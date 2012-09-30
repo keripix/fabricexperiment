@@ -112,6 +112,7 @@
     
     canvas.add(instance);
     canvas.renderAll();
+    console.log(instance.get('oCoords'));
   }
   
   Rectangle.prototype.update = function (e) {
@@ -199,7 +200,9 @@
           height = Math.abs(point.y - topLeft.y),
           top,
           left;
-          
+      
+      width = point.x - topLeft.x;
+      height = point.y - topLeft.y;
       // Dapatkah pembaca memahami mengapa kita perlu melakukan pendekatan
       // seperti ini?
       if (point.x < topLeft.x && point.y < topLeft.y) {
