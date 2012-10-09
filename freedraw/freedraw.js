@@ -28,7 +28,6 @@
    * Menginisiasi objek yang akan mengatur proses pelukisan
    */
   function activateDrawing(params) {
-    canvas.defaultCursor = 'crosshair';
     
     if (params.type === 'rect') {
       drawing = new Rectangle();
@@ -80,6 +79,7 @@
    *******************************************/
   
   function Sketch() {
+    canvas.defaultCursor = 'crosshair';
     canvas.freeDrawingColor = 'back';
     canvas.freeDrawingLineWidth = 10;
     canvas.isDrawingMode = true;
@@ -97,7 +97,7 @@
    * OBJEK UNTUK KOTAK
    ******************************************/
   function Rectangle() {
-    
+    canvas.defaultCursor = 'crosshair';
   }
   
   Rectangle.prototype.create = function (e) {
@@ -139,7 +139,7 @@
    * OBJEK UNTUK LINGKARAN
    *****************************************/
   function Circle() {
-    
+    canvas.defaultCursor = 'crosshair';
   }
   
   Circle.prototype.create = function (e) {
@@ -179,6 +179,7 @@
     var point = canvas.getPointer(e.e);
     
     fabric.Image.fromURL('kucing.jpg', function (img) {
+      canvas.defaultCursor = 'crosshair';
       instance = img;
       instance.set({
         top: point.y,
@@ -186,6 +187,7 @@
         height: 4,
         width: 4
       });
+    
       instance.setCoords();
       canvas.add(instance);
       canvas.renderAll();
