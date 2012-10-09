@@ -201,8 +201,6 @@
           top,
           left;
       
-      width = point.x - topLeft.x;
-      height = point.y - topLeft.y;
       // Dapatkah pembaca memahami mengapa kita perlu melakukan pendekatan
       // seperti ini?
       if (point.x < topLeft.x && point.y < topLeft.y) {
