@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <title>Bisa Canvas</title>
+</head>
+<body>
+  <button id="kotak">Kotak</button>
+  <button id="lingkaran">Lingkaran</button>
+  <canvas id="bisacanvas" width=600 height=600 style="border:1px solid black"></canvas>
+  <script src="fabric.min.js"></script>
+  <script type="text/javascript">
+    var canvas = new fabric.Canvas("bisacanvas"),
+        kotak = document.getElementById("kotak"),
+        lingkaran = document.getElementById("lingkaran");
+
+    // untuk menggambar lingkaran
+    function drawCircle () {
+      var newCircle = new fabric.Circle({
+        radius: 50,
+        fill: 'red',
+        left: canvas.getCenter().left,
+        top: canvas.getCenter().top
+      });
+
+      // tambahkan ke canvas
+      canvas.add(newCircle);
+
+      // lukis canvas
+      canvas.renderAll();
+    }
+
+    // untuk menggambar kotak
+    function drawRectangle () {
+      var newRect = new fabric.Rect({
+        width: 100,
+        height: 100,
+        fill: 'blue',
+        left: canvas.getCenter().left,
+        top: canvas.getCenter().top
+      });
+
+      // tambahkan ke canvas
+      canvas.add(newRect);
+
+      // lukis canvas
+      canvas.renderAll();
+    }
+
+    // bila tombol kotak ditekan, jalankan drawRectangle()
+    kotak.addEventListener('click', drawRectangle, false);
+    // bila tombol lingkaran ditekan, jalankan drawCircle()
+    lingkaran.addEventListener('click', drawCircle, false);
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+#controlpanel, #canvaspanel {
+    display: inline;
+    float: left;
+}
+
+#centerpanel {
+    margin-top: 5px;
+}
+
+#canvaspanel {
+    margin-right: 10px;
+}
+
+label span {
+    display: inline-block;
+    width: 100px;
+}
