@@ -2,13 +2,23 @@
 
 <html>
 <head>
-    <title>Flame Ball</title>
+    <title>Flame Ball Basket</title>
 </head>
 
 <body>
 <canvas id='flame' height='600' width='600' style="border: solid 1px black"></canvas>
-<script src=''></script>
-<script src='../fabric.min.js'></script>
-<script src='flameball.js'></script>
+<script src='../basket.full.min.js'></script>
+<script type="text/javascript">
+	// ini dimaksudkan agar basket mengetahui bahwa versi fabric
+	// yang di-load adalah versi 0.9.15. Tujuannya, selama tidak
+	// ada versi baru, maka kita akan gunakan versi terbaru yang
+	// ada di cache
+	basket.require({url: "../fabric.min.js", unique: "0.9.15"})
+		.then(function() {
+			basket.require({url: "flameball.js", unique: "0.3"});
+		});
+</script>
+<!-- <script src='../fabric.min.js'></script> -->
+<!-- <script src='flameball.js'></script> -->
 </body>
 </html>
