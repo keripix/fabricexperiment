@@ -8,7 +8,7 @@
       color,
       mouseTop = 300,
       mouseLeft = 300;
-  
+
   // cross-browser support
   if (!window.requestAnimationFrame ) {
     window.requestAnimationFrame = (function () {
@@ -21,21 +21,24 @@
       };
     })();
   }
-  
+
   // membuat bolanya
   setInterval(function () {
     var rand = fabric.util.getRandomInt(0, 5);
-    
+
     ball = new fabric.Circle({
       top: mouseTop,
       left: mouseLeft,
-      fill: 'orange',
+      fill: 'blue',
       radius: 30 + rand,
-      select: false
+      select: false,
+      hasControls: false,
+      hasRotatingPoint: false,
+      hasBorders: false
     });
     canvas.add(ball);
   }, 60);
-  
+
   // kita akan menggambarkan bolanya sesuai dengan posisi mouse
   canvas.observe({
     'mouse:move': function (e) {
@@ -44,13 +47,13 @@
       mouseLeft = point.x;
     }
   });
-  
+
   // animasi bola api
   (function animate() {
     canvas.forEachObject(function (obj) {
       var top = obj.get('top'),
           radius = obj.getRadiusX();
-      
+
       if (radius < 2) {
         canvas.remove(obj);
       } else {
@@ -58,7 +61,7 @@
         obj.setRadius(radius - 1);
       }
     });
-    
+
     canvas.renderAll();
     window.requestAnimationFrame(animate);
   })();
